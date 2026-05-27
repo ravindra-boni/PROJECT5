@@ -1,0 +1,46 @@
+<mvc:View
+    controllerName="project5.controller.Practice"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page title="Filter and Sort" class="myPage"
+    >
+
+        <content>
+
+            <!-- Buttons -->
+<VBox >
+            <Button
+                text="Filter Developers" type="Reject"
+                press="onFilter" />
+
+<Text text = "Employee " class = "myText" />
+
+            <Button
+                text="Sort Salary Desc" type="Accept"
+                press="onSort" />
+
+                <Button
+               text="Refresh"  type="Emphasized"
+               press="onRefresh" />
+
+       </VBox>
+
+
+            <List
+                id="empLists"
+                items="{
+                 path:'/employees'
+                  }">
+
+                <StandardListItem
+                    title="{name}"
+                    description="{role}" />
+
+            </List>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

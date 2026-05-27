@@ -1,0 +1,118 @@
+<mvc:View controllerName="project5.controller.Employee"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <SplitApp id="splitApp">
+
+        <masterPages>
+
+            <Page title="Employees">
+
+                <content>
+
+                    <SearchField liveChange="onSearchEmployee" showSearchButton="true" width="100%" />
+
+                    <List id="empList" items="{/EmployeeSet}" itemPress="onSelectEmployee" mode="SingleSelectMaster">
+
+                        <StandardListItem title="{EmpName}" description="{Department}" info="{EmpId}" type="Active" />
+                    </List>
+                </content>
+                
+            </Page>
+
+        </masterPages>
+
+        <detailPages>
+
+            <Page id="detailPage" title="Employee Details">
+
+                <content>
+
+                    <VBox class="sapUiMediumMargin">
+
+                        <Title text="{EmpName}" level="H2" />
+
+                        <Table>
+
+                            <columns>
+                                <Column>
+                                    <Text text="Field"/>
+                                </Column>
+                                <Column>
+                                    <Text text="Value"/>
+                                </Column>
+                            </columns>
+
+                            <items>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Employee ID"/>
+                                        <Text text="{EmpId}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Name"/>
+                                        <Text text="{EmpName}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Department"/>
+                                        <Text text="{Department}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Designation"/>
+                                        <Text text="{Designation}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Email"/>
+                                        <Text text="{Email}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Phone"/>
+                                        <Text text="{Phone}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="DOJ"/>
+                                        <Text text="{Doj}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="Status"/>
+                                        <Text text="{Status}"/>
+                                    </cells>
+                                </ColumnListItem>
+
+                            </items>
+
+                        </Table>
+
+                    </VBox>
+
+                </content>
+
+            </Page>
+
+        </detailPages>
+
+    </SplitApp>
+
+</mvc:View>

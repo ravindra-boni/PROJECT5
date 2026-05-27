@@ -1,0 +1,15 @@
+/* Enter your custom styles here */
+
+.myText {
+    color : red;
+    font-size: 20px;
+}
+
+.myPage .sapMBar{
+    background-color: black !important;
+}
+
+.myPage .sapMTitle{
+    color: white!important;
+}
+

@@ -1,0 +1,45 @@
+<mvc:View
+    controllerName="project5.controller.Property"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+
+    <Page title="Property View">
+
+        <content>
+
+            <VBox class="sapUiSmallMargin">
+
+                <Text text="Property Page Loaded" />
+
+
+                
+                <Text text="{name}" />
+                <Text text="{role}" />
+
+         
+                <Text text="{= ${salary} > 50000 ? 'High Salary' : 'Low Salary'}" />
+
+            
+                 <Text
+                    text="{
+                        path: 'salary',
+                        formatter: '.formatter.formatSalary'
+                    }" />  
+
+            </VBox>
+
+            <List
+                items="{/employees}"
+                class="sapUiSmallMarginTop">
+
+                <StandardListItem
+                    title="{name}"
+                    description="{role}" />
+
+            </List>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

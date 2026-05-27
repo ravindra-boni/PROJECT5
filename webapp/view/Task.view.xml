@@ -1,0 +1,76 @@
+<mvc:View
+    controllerName="project5.controller.Task"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+
+    <Page title="Resource :Slot Booking System">
+
+        <content>
+
+            <VBox class="sapUiMediumMargin">
+
+                <!-- Resource Type -->
+           <Label text="Select Resource" />
+<ComboBox id="resource"
+  
+    items="{/resources}">
+    <core:Item key="{key}" text="{text}" />
+</ComboBox>
+
+
+    
+                <!-- Employee -->
+                <Label text="Department" />
+
+                <ComboBox id="dept"
+                   
+                    items="{/department}">
+                    <core:Item key="{department}" text="{department}" />
+
+                </ComboBox>
+
+                <!-- Department -->
+                <Label text="Employee" />
+                <Input id="emp" placeholder="Enter Employee Name" />
+
+                <!-- Date -->
+                <Label text="Date" />
+                <DatePicker id="date" />
+                
+                <Label text="Time" />
+<TimePicker id="time" />
+
+
+
+
+        <Label text="Capacity" />
+                <Input id="capacity_of_members" />
+                
+
+                <HBox class="sapUiSmallMarginTop">
+
+                    <Button text="Book Slot" type="Emphasized" press="onBook" />
+                    <Button text="Fetch BOOKED SLOT" press="onFetchBOOKED SLOT" />
+
+    <Button text="Reset" type="Reject" press="onReset" />
+                </HBox>
+
+
+            </VBox>
+
+            <!-- Bookings List -->
+            <VBox>
+            <List  id = "bookingList" items="{/bookings}" class="sapUiSmallMarginTop">
+                
+                <StandardListItem
+                    title="{employee} - {resource}"
+                    description="{date} | {time} | {department} |Capacity:  {capacity}" />
+
+            </List>
+            </VBox>
+
+        </content>
+        
+    </Page>
+</mvc:View>
