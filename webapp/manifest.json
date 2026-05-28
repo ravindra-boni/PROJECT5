@@ -24,6 +24,28 @@
           "localUri": "localService/mainService/metadata.xml",
           "odataVersion": "2.0"
         }
+      },
+      "ZTRAIN_BOOKING_SRV": {
+        "uri": "/sap/opu/odata/sap/ZTRAIN_BOOKING_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/ZTRAIN_BOOKING_SRV/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "zslot-display": {
+          "semanticObject": "zslot",
+          "action": "display",
+          "title": "{{zslot-display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
       }
     }
   },
@@ -50,7 +72,7 @@
       "libs": {
         "sap.m": {},
         "sap.ui.core": {},
-            "sap.viz": {}
+        "sap.viz": {}
       }
     },
     "contentDensities": {
@@ -66,6 +88,11 @@
       },
       "": {
         "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      },
+      "ZTRAIN_BOOKING_SRV": {
+        "dataSource": "ZTRAIN_BOOKING_SRV",
         "preload": true,
         "settings": {}
       }
@@ -100,6 +127,13 @@
           "pattern": "Frame",
           "target": [
             "TargetFrame"
+          ]
+        },
+        {
+          "name": "Slot",
+          "pattern": "Slot",
+          "target": [
+            "TargetSlot"
           ]
         },
         {
@@ -138,7 +172,7 @@
           "clearControlAggregation": false,
           "viewId": "Employee",
           "viewName": "Employee"
-      },
+        },
         "TargetFrame": {
           "viewType": "XML",
           "transition": "slide",
@@ -146,7 +180,7 @@
           "viewId": "Frame",
           "viewName": "Frame"
         },
-         "TargetProperty": {
+        "TargetProperty": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
@@ -160,7 +194,14 @@
           "viewId": "Task",
           "viewName": "Task"
         },
-         "TargetPractice": {
+        "TargetSlot": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Slot",
+          "viewName": "Slot"
+        },
+        "TargetPractice": {
           "viewType": "XML",
           "transition": "slide",
           "clearControlAggregation": false,
@@ -175,5 +216,9 @@
       "async": true,
       "id": "App"
     }
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "project5"
   }
 }

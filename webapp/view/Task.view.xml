@@ -4,73 +4,95 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core">
 
-    <Page title="Resource :Slot Booking System">
+    <Page title="Training Room Slot Booking System">
 
         <content>
 
-            <VBox class="sapUiMediumMargin">
+            <VBox class="sapUiSizeCompact sapUiMediumMargin">
 
-                <!-- Resource Type -->
-           <Label text="Select Resource" />
-<ComboBox id="resource"
-  
-    items="{/resources}">
-    <core:Item key="{key}" text="{text}" />
-</ComboBox>
+                <Title text="TRAINING ROOM BOOKING SYSTEM" level="H2"/>
 
-
-    
-                <!-- Employee -->
-                <Label text="Department" />
-
-                <ComboBox id="dept"
-                   
-                    items="{/department}">
-                    <core:Item key="{department}" text="{department}" />
-
+                <!-- Resource -->
+                <Label text="Select Resource" />
+                <ComboBox id="resource" selectedKey="Training Room">
+                    <items>
+                        <core:Item key="Training Room" text="Training Room" />
+                    </items>
                 </ComboBox>
 
                 <!-- Department -->
+                <Label text="Department" />
+                <ComboBox id="dept" items="{local>/department}">
+    <core:Item key="{local>department}" text="{local>department}" />
+</ComboBox>
+
+                <!-- Employee -->
                 <Label text="Employee" />
                 <Input id="emp" placeholder="Enter Employee Name" />
 
                 <!-- Date -->
                 <Label text="Date" />
                 <DatePicker id="date" />
-                
+
+                <!-- Time -->
                 <Label text="Time" />
-<TimePicker id="time" />
+                <Input id="timee" placeholder="Select Slot" />
 
+           
 
+                <!-- Slots -->
+                <Label text="Available Slots" />
+                <HBox wrap="Wrap">
+<Button
+    text="09:00 AM"
+    press="onSelectSlot"
+    type="{= ${local>/slot09} ? 'Reject' : 'Accept' }"/>
 
+<Button
+    text="10:00 AM"
+    press="onSelectSlot"
+    type="{= ${local>/slot10} ? 'Reject' : 'Accept' }"/>
 
-        <Label text="Capacity" />
-                <Input id="capacity_of_members" />
-                
+<Button
+    text="11:00 AM"
+    press="onSelectSlot"
+    type="{= ${local>/slot11} ? 'Reject' : 'Accept' }"/>
 
+<Button
+    text="12:00 PM"
+    press="onSelectSlot"
+    type="{= ${local>/slot12} ? 'Reject' : 'Accept' }"/>
+
+</HBox>
+ <!-- Capacity -->
+                <Label text="Capacity" />
+                <Input id="capacity_of_member" type="Number" />
+
+                <!-- Buttons -->
                 <HBox class="sapUiSmallMarginTop">
-
                     <Button text="Book Slot" type="Emphasized" press="onBook" />
-                    <Button text="Fetch BOOKED SLOT" press="onFetchBOOKED SLOT" />
-
-    <Button text="Reset" type="Reject" press="onReset" />
+                    <Button text="Reset" type="Reject" press="onReset" />
+                    <Button text="Fetch Booked Slots" press="onFetchBookedSlots" />
                 </HBox>
-
 
             </VBox>
 
-            <!-- Bookings List -->
-            <VBox>
-            <List  id = "bookingList" items="{/bookings}" class="sapUiSmallMarginTop">
-                
-                <StandardListItem
-                    title="{employee} - {resource}"
-                    description="{date} | {time} | {department} |Capacity:  {capacity}" />
 
-            </List>
+            <VBox>
+                <Title text="BOOKED SLOTS (Backend Data)" level="H3"/>
+
+                <List
+                    id="bookingList"
+                    items="{/BookingSet01}"
+                    class="sapUiSmallMarginTop">
+
+                    <StandardListItem
+                        title="{Employee} - {Department}"
+                        description="{BookDate} | {BookTime} | Capacity: {Capacity}" />
+
+                </List>
             </VBox>
 
         </content>
-        
     </Page>
 </mvc:View>

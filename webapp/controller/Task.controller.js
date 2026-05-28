@@ -1,117 +1,154 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/model/json/JSONModel",
-    "sap/m/MessageToast"
-], function (Controller, JSONModel, MessageToast) {
+    "sap/m/MessageToast",
+    "sap/ui/model/odata/v2/ODataModel",
+    "sap/ui/model/json/JSONModel"
+], function (Controller, MessageToast, ODataModel, JSONModel) {
 
     "use strict";
 
     return Controller.extend("project5.controller.Task", {
 
         onInit: function () {
+        
+            var oModel = new ODataModel("/sap/opu/odata/sap/ZTRAIN_BOOKING_SRV/", {
+                useBatch: false
+            });
 
-            var oData = {
-                resources: [
-        { key: "Training Room", text: "Training Room" },
-                ],
+            this.getView().setModel(oModel);
+
+            // LOCAL MODEL
+            var oLocalModel = new JSONModel({
 
                 department: [
                     { department: "HR" },
                     { department: "OPERATIONS" },
                     { department: "ASSISTANTS" },
-                    {department:"CONSULTANT"},
-                    {department:"JAVA"},
-                    {department:"TRAINEE"}
-
+                    { department: "CONSULTANT" },
+                    { department: "JAVA" },
+                    { department: "TRAINEE" }
                 ],
 
-                bookings: [],
-                    parkingBookings: []
+                slot09: false,
+                slot10: false,
+                slot11: false,
+                slot12: false
 
-            };
+            });
 
-            var oModel = new JSONModel(oData);
-            this.getView().setModel(oModel);
+            this.getView().setModel(oLocalModel, "local");
         },
 
+        // SLOT SELECT
+        onSelectSlot: function (oEvent) {
 
-              // BOOK SLOT
+            var sTime = oEvent.getSource().getText();
+            var sType = oEvent.getSource().getType();
+
+            if (sType === "Reject") {
+                MessageToast.show("Slot Already Booked");
+                return;
+            }
+
+            this.byId("time").setValue(sTime);
+
+            MessageToast.show("Slot Selected: " + sTime);
+        },
+
+        // BOOK SLOT
         onBook: function () {
 
             var oModel = this.getView().getModel();
-
+            var oDate = this.byId("date").getDateValue();
             var oBooking = {
-                resource: this.byId("resource").getSelectedKey(""),
-            
-                employee: this.byId("emp").getValue(),
-                department: this.byId("dept").getValue(),
-                date: this.byId("date").getValue(),
-                time: this.byId("time").getValue(),
-                capacity: this.byId("capacity_of_members").getValue()
-             
+
+                Employee: this.byId("emp").getValue(),
+
+                Department: this.byId("dept").getSelectedKey(),
+
+                BookDate: oDate
+                    ? oDate.toISOString().split("T")[0] + "T00:00:00"
+                    : null,
+
+                BookTime: this.byId("time").getValue(),
+
+                Capacity: parseInt(
+                    this.byId("capacity_of_members").getValue(),
+                    10
+                )
             };
 
-            var aBookings = oModel.getProperty("/bookings") || [];
+            console.log("SENDING:", oBooking);
 
+            oModel.create("/BookingSet01", oBooking, {
 
-             // Duplicate check//
-    var bExists = aBookings.some(function (oItem) {
+                success: function () {
 
-        return oItem.employee === oBooking.employee;
+                    MessageToast.show("Booking Successful");
 
-    });
+                    var oLocal = this.getView().getModel("local");
 
-    if (bExists) {
+                    var sTime = this.byId("time").getValue();
 
-        MessageToast.show("Booking already exists for this employee");
-        return;
+                    // RED COLOR FOR BOOKED SLOT
+                    if (sTime === "09:00 AM") {
+                        oLocal.setProperty("/slot09", true);
+                    }
 
-    }
+                    if (sTime === "10:00 AM") {
+                        oLocal.setProperty("/slot10", true);
+                    }
 
+                    if (sTime === "11:00 AM") {
+                        oLocal.setProperty("/slot11", true);
+                    }
 
-            aBookings.push(oBooking);
+                    if (sTime === "12:00 PM") {
+                        oLocal.setProperty("/slot12", true);
+                    }
 
-            oModel.setProperty("/bookings", aBookings);
+                }.bind(this),
 
-            MessageToast.show("Slot Booked Successfully");
+                error: function (err) {
+
+                    console.log("ERROR:", err);
+                    MessageToast.show("Booking Failed");
+                }
+            });
         },
 
-     
-        onFetchParking: function () {
+        // FETCH ALL BOOKINGS
+        onFetchBookedSlots: function () {
 
-    var oModel = this.getView().getModel();
+            var oModel = this.getView().getModel();
 
-    // All bookings
-    var aBookings = oModel.getProperty("/bookings")  || [];
+            oModel.read("/BookingSet01", {
 
-    // Filter only parking
-    var aParking = aBookings.filter(function (oItem) {
+                success: function (oData) {
+                    MessageToast.show(
+                        "Total Bookings: " + oData.results.length
+                    );
+                    console.log("ALL BOOKINGS:", oData.results);
+                },
 
-        return oItem.resource === "Parking";
-
-    });
-
-    // Set filtered data
-    oModel.setProperty("/parkingBookings", aParking);
-
-    sap.m.MessageToast.show("Parking Slots Fetched");
-
+                error: function (oError) {
+                    MessageToast.show("Fetch Failed");
+                    console.log(oError);
+                }
+            });
         },
 
+        // RESET
+        onReset: function () {
+            this.byId("resource").setSelectedKey("");
+            this.byId("emp").setValue("");
+            this.byId("dept").setSelectedKey("");
+            this.byId("date").setValue("");
+            this.byId("time").setValue("");
+            this.byId("capacity_of_members").setValue("");
 
-   onReset: function () {
-
-    // reset inputs
-    this.byId("resource").setSelectedKey("Parking");
-    this.byId("emp").setSelectedKey("");
-    this.byId("dept").setValue("");
-    this.byId("date").setValue("");
-    this.byId("time").setValue("");
-    this.byId("vehicle").setValue("");
-    this.byId("capacity_of_members").setValue("");
-
-    sap.m.MessageToast.show("Reset Done");
-},
+            MessageToast.show("Reset Done");
+        }
 
     });
 

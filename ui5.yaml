@@ -19,6 +19,10 @@ server:
           - path: /sap
             url: http://192.168.110.43:8001
             destination: S49
+          - path: /sap/opu/odata/sap/ZTRAIN_BOOKING_SRV/
+            url: http://192.168.110.43:8001
+            client: '100'
+            destination: S49
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

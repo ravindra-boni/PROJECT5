@@ -19,6 +19,10 @@ server:
           - path: /sap
             url: http://192.168.110.43:8001
             destination: S49
+          - path: /sap/opu/odata/sap/ZTRAIN_BOOKING_SRV/
+            url: http://192.168.110.43:8001
+            client: '100'
+            destination: S49
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -38,5 +42,9 @@ server:
           - urlPath: /sap/opu/odata/sap/ZEMP_ATTEND_SRV_SRV
             metadataPath: ./webapp/localService/mainService/metadata.xml
             mockdataPath: ./webapp/localService/mainService/data
+            generateMockData: true
+          - urlPath: /sap/opu/odata/sap/ZTRAIN_BOOKING_SRV
+            metadataPath: ./webapp/localService/ZTRAIN_BOOKING_SRV/metadata.xml
+            mockdataPath: ./webapp/localService/ZTRAIN_BOOKING_SRV/data
             generateMockData: true
         annotations: []
